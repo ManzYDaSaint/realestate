@@ -8,8 +8,8 @@ import {
   Trash,
   MoreHorizontal,
   Plus,
+  Search,
 } from "lucide-react";
-import FormInput from "../components/formInput";
 
 const allProperties = [
   // Add more items here to simulate infinite scroll
@@ -98,7 +98,7 @@ export default function PropertyList() {
       </div>
       <div className="p-6">
         {/* Controls */}
-        <div className="flex flex-col md:flex-row justify-between gap-4 mb-6 fixed top-16 left-20 right-14 z-10 bg-white border-2 border-gray-200 mt-20 rounded-xl ml-10 px-10">
+        <div className="flex flex-col md:flex-row justify-between gap-4 mb-6 fixed top-16 left-20 right-14 z-10 bg-white border-2 border-gray-200 mt-20 rounded-xl ml-10 px-8">
           <div className="flex flex-wrap gap-2 items-center">
             {["all", "sale", "rent"].map((key) => (
               <button
@@ -118,20 +118,23 @@ export default function PropertyList() {
               </button>
             ))}
           </div>
-          <div className="flex flex-wrap gap-3 items-center">
-            <FormInput
-              onChange={(e) => setSearch(e.target.value)}
-              value={search}
-              placeholder="Search by title or address"
-              label={"."}
-              className="w-full sm:w-64"
-            />
+          <div className="flex flex-wrap gap-3 items-center py-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                value={search}
+                type="text"
+                placeholder="Search listings..."
+                className="pl-10 pr-4 py-2 border rounded-md text-sm w-72 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
             <div className="flex flex-col">
               <select
                 id="sort"
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="rounded-lg border border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mt-3"
+                className="rounded-lg border border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="newest">Newest</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -139,7 +142,7 @@ export default function PropertyList() {
               </select>
             </div>
 
-            <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm text-white text-semibold rounded-lg bg-blue-500 hover:bg-blue-100 hover:text-blue-500 transition duration-300 mt-3">
+            <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm text-white text-semibold rounded-lg bg-blue-500 hover:bg-blue-100 hover:text-blue-500 transition duration-300">
               <Plus size={16} />
               Add Property
             </button>

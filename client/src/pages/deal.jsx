@@ -4,7 +4,6 @@ import { useState } from "react"
 import {
   Plus,
   Search,
-  Filter,
   MoreVertical,
   Mail,
   Edit,
@@ -112,12 +111,10 @@ const stageColors = {
 
 function DealManagement() {
   const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedDeal, setSelectedDeal] = useState(null)
   const [search, setSearch] = useState("");
 
   const handleMenuOpen = (event, deal) => {
     setAnchorEl(event.currentTarget)
-    setSelectedDeal(deal)
   }
 
   const handleMenuClose = () => {
@@ -141,166 +138,6 @@ const filteredGrouped = filtered.reduce((acc, deal) => {
 
 
   return (
-    // <Box>
-    //   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-    //     <Typography variant="h4" component="h1" sx={{ fontWeight: "medium" }}>
-    //       Deal Management
-    //     </Typography>
-    //     <Button variant="contained" color="primary" startIcon={<Plus size={18} />} sx={{ textTransform: "none" }}>
-    //       Add New Deal
-    //     </Button>
-    //   </Box>
-
-    //   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-    //     <TextField
-    //       placeholder="Search deals..."
-    //       variant="outlined"
-    //       size="small"
-    //       sx={{ width: 300 }}
-    //       InputProps={{
-    //         startAdornment: (
-    //           <InputAdornment position="start">
-    //             <Search size={20} />
-    //           </InputAdornment>
-    //         ),
-    //       }}
-    //     />
-    //     <Box>
-    //       <Button variant="outlined" startIcon={<Filter size={18} />} sx={{ textTransform: "none" }}>
-    //         Filter
-    //       </Button>
-    //     </Box>
-    //   </Box>
-
-    //   <Box sx={{ display: "flex", gap: 2, overflowX: "auto", pb: 2 }}>
-    //     {Object.entries(dealsData).map(([stage, deals]) => (
-    //       <Paper
-    //         key={stage}
-    //         sx={{
-    //           minWidth: 300,
-    //           maxWidth: 300,
-    //           display: "flex",
-    //           flexDirection: "column",
-    //           height: "fit-content",
-    //         }}
-    //       >
-    //         <Box
-    //           sx={{
-    //             p: 2,
-    //             backgroundColor: stageColors[stage]?.bg,
-    //             color: stageColors[stage]?.color,
-    //             display: "flex",
-    //             justifyContent: "space-between",
-    //             alignItems: "center",
-    //           }}
-    //         >
-    //           <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
-    //             {stage}
-    //           </Typography>
-    //           <Chip
-    //             label={deals.length}
-    //             size="small"
-    //             sx={{
-    //               backgroundColor: "white",
-    //               color: stageColors[stage]?.color,
-    //               fontWeight: "bold",
-    //             }}
-    //           />
-    //         </Box>
-
-    //         <Box sx={{ p: 1 }}>
-    //           {deals.map((deal) => (
-    //             <Card key={deal.id} sx={{ mb: 1, boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}>
-    //               <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
-    //                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-    //                   <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
-    //                     {deal.title}
-    //                   </Typography>
-    //                   <IconButton size="small" onClick={(e) => handleMenuOpen(e, deal)} sx={{ ml: 1, mt: -1, mr: -1 }}>
-    //                     <MoreVertical size={16} />
-    //                   </IconButton>
-    //                 </Box>
-
-    //                 <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-    //                   <User size={14} style={{ marginRight: "4px" }} />
-    //                   <Typography variant="body2" color="text.secondary">
-    //                     {deal.client}
-    //                   </Typography>
-    //                 </Box>
-
-    //                 <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-    //                   <Home size={14} style={{ marginRight: "4px" }} />
-    //                   <Typography variant="body2" color="text.secondary" noWrap>
-    //                     {deal.property}
-    //                   </Typography>
-    //                 </Box>
-
-    //                 <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-    //                   <DollarSign size={14} style={{ marginRight: "4px" }} />
-    //                   <Typography variant="body2" color="text.secondary">
-    //                     {deal.value}
-    //                   </Typography>
-    //                 </Box>
-
-    //                 <Box sx={{ display: "flex", alignItems: "center" }}>
-    //                   <Calendar size={14} style={{ marginRight: "4px" }} />
-    //                   <Typography variant="body2" color="text.secondary">
-    //                     {deal.date}
-    //                   </Typography>
-    //                 </Box>
-
-    //                 <Divider sx={{ my: 1 }} />
-
-    //                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-    //                   <Box sx={{ display: "flex", alignItems: "center" }}>
-    //                     <Avatar sx={{ width: 24, height: 24, mr: 1, fontSize: "0.75rem", bgcolor: "primary.main" }}>
-    //                       {deal.agent
-    //                         .split(" ")
-    //                         .map((n) => n[0])
-    //                         .join("")}
-    //                     </Avatar>
-    //                     <Typography variant="body2">{deal.agent}</Typography>
-    //                   </Box>
-
-    //                   <Button size="small" endIcon={<ArrowRight size={14} />} sx={{ textTransform: "none", p: 0 }}>
-    //                     Move
-    //                   </Button>
-    //                 </Box>
-    //               </CardContent>
-    //             </Card>
-    //           ))}
-
-    //           <Button
-    //             fullWidth
-    //             variant="outlined"
-    //             color="primary"
-    //             startIcon={<Plus size={16} />}
-    //             sx={{ textTransform: "none", mt: 1 }}
-    //           >
-    //             Add Deal
-    //           </Button>
-    //         </Box>
-    //       </Paper>
-    //     ))}
-    //   </Box>
-
-    //   <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-    //     <MenuItem onClick={handleMenuClose}>
-    //       <Edit size={16} style={{ marginRight: "8px" }} />
-    //       Edit Deal
-    //     </MenuItem>
-    //     <MenuItem onClick={handleMenuClose}>
-    //       <Mail size={16} style={{ marginRight: "8px" }} />
-    //       Contact Client
-    //     </MenuItem>
-    //     <Divider />
-    //     <MenuItem onClick={handleMenuClose} sx={{ color: "error.main" }}>
-    //       <Trash2 size={16} style={{ marginRight: "8px" }} />
-    //       Delete Deal
-    //     </MenuItem>
-    //   </Menu>
-    // </Box>
-
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
@@ -313,16 +150,14 @@ const filteredGrouped = filtered.reduce((acc, deal) => {
 
       {/* Search & Filter */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div className="relative w-full sm:w-80">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-500">
-            <Search size={20} />
-          </span>
+        <div className="relative">
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
           <input
           onChange={(e) => setSearch(e.target.value)}
           value={search}
             type="text"
-            placeholder="Search deals with title, agent, property or stage"
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Search deals..."
+            className="pl-10 pr-4 py-2 border rounded-md text-sm w-72 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>

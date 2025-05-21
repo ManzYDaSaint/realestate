@@ -2,25 +2,17 @@
 
 import { useState } from "react"
 import {
-  Box,
-  Typography,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  IconButton,
-  LinearProgress,
-  Divider,
-  Grid,
-  Avatar,
-  AvatarGroup,
-  Menu,
-  MenuItem,
-} from "@mui/material"
-import { Plus, MoreVertical, Calendar, CheckCircle, Clock, AlertCircle, Edit, Trash2, FileText } from "lucide-react"
+  Plus,
+  MoreVertical,
+  Calendar,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  Edit,
+  Trash2,
+  FileText,
+} from "lucide-react"
 
-// Sample data for projects
 const projectsData = [
   {
     id: 1,
@@ -30,10 +22,7 @@ const projectsData = [
     progress: 65,
     dueDate: "2023-08-15",
     team: ["JD", "JS", "RB", "EW"],
-    tasks: {
-      total: 24,
-      completed: 16,
-    },
+    tasks: { total: 24, completed: 16 },
   },
   {
     id: 2,
@@ -43,10 +32,7 @@ const projectsData = [
     progress: 25,
     dueDate: "2023-09-30",
     team: ["JD", "MT", "LT"],
-    tasks: {
-      total: 18,
-      completed: 5,
-    },
+    tasks: { total: 18, completed: 5 },
   },
   {
     id: 3,
@@ -56,10 +42,7 @@ const projectsData = [
     progress: 40,
     dueDate: "2023-10-15",
     team: ["JS", "RB", "EW", "MT"],
-    tasks: {
-      total: 32,
-      completed: 12,
-    },
+    tasks: { total: 32, completed: 12 },
   },
   {
     id: 4,
@@ -69,168 +52,123 @@ const projectsData = [
     progress: 100,
     dueDate: "2023-05-01",
     team: ["JD", "JS"],
-    tasks: {
-      total: 15,
-      completed: 15,
-    },
+    tasks: { total: 15, completed: 15 },
   },
 ]
 
-// Status chip colors
-const statusColors = {
-  Planning: { bg: "#e3f2fd", color: "#1976d2" },
-  "In Progress": { bg: "#fff8e1", color: "#f57c00" },
-  "On Hold": { bg: "#f3e5f5", color: "#7b1fa2" },
-  Completed: { bg: "#e8f5e9", color: "#388e3c" },
+const statusClasses = {
+  Planning: "bg-blue-100 text-blue-600",
+  "In Progress": "bg-yellow-100 text-yellow-700",
+  "On Hold": "bg-purple-100 text-purple-700",
+  Completed: "bg-green-100 text-green-600",
 }
 
-function ProjectManagement() {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedProject, setSelectedProject] = useState(null)
+export default function ProjectManagement() {
+  const [menuOpenId, setMenuOpenId] = useState(null)
 
-  const handleMenuOpen = (event, project) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedProject(project)
-  }
-
-  const handleMenuClose = () => {
-    setAnchorEl(null)
+  const toggleMenu = (id) => {
+    setMenuOpenId(menuOpenId === id ? null : id)
   }
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-        <Typography variant="h4" component="h1" sx={{ fontWeight: "medium" }}>
-          Project Management
-        </Typography>
-        <Button variant="contained" color="primary" startIcon={<Plus size={18} />} sx={{ textTransform: "none" }}>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold">Project Management</h1>
+        <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm text-white text-semibold rounded-lg bg-blue-500 hover:bg-blue-100 hover:text-blue-500 transition duration-300 mt-3">
+          <Plus size={16} />
           Add New Project
-        </Button>
-      </Box>
+        </button>
+      </div>
 
-      <Grid container spacing={3}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projectsData.map((project) => (
-          <Grid item xs={12} md={6} key={project.id}>
-            <Card>
-              <CardHeader
-                title={
-                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Typography variant="h6">{project.title}</Typography>
-                    <IconButton size="small" onClick={(e) => handleMenuOpen(e, project)}>
-                      <MoreVertical size={18} />
-                    </IconButton>
-                  </Box>
-                }
-                subheader={
-                  <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
-                    <Chip
-                      label={project.status}
-                      size="small"
-                      sx={{
-                        backgroundColor: statusColors[project.status]?.bg,
-                        color: statusColors[project.status]?.color,
-                        fontWeight: "medium",
-                      }}
-                    />
-                    <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-                      <Calendar size={14} style={{ marginRight: "4px" }} />
-                      <Typography variant="body2" color="text.secondary">
-                        Due: {project.dueDate}
-                      </Typography>
-                    </Box>
-                  </Box>
-                }
-                sx={{ pb: 0 }}
-              />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  {project.description}
-                </Typography>
+          <div key={project.id} className="bg-white border-2 border-gray-200 shadow-md rounded-lg p-5 relative">
+            <div className="flex justify-between items-start mb-3">
+              <h2 className="text-lg font-medium">{project.title}</h2>
+              <button onClick={() => toggleMenu(project.id)}>
+                <MoreVertical size={18} className="text-gray-500" />
+              </button>
 
-                <Box sx={{ mb: 2 }}>
-                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 0.5 }}>
-                    <Typography variant="body2" fontWeight="medium">
-                      Progress
-                    </Typography>
-                    <Typography variant="body2" fontWeight="medium">
-                      {project.progress}%
-                    </Typography>
-                  </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={project.progress}
-                    sx={{
-                      height: 6,
-                      borderRadius: 3,
-                      backgroundColor: "rgba(0, 0, 0, 0.08)",
-                      "& .MuiLinearProgress-bar": {
-                        borderRadius: 3,
-                        backgroundColor: project.status === "Completed" ? "#388e3c" : "primary.main",
-                      },
-                    }}
-                  />
-                </Box>
+              {/* Dropdown menu */}
+              {menuOpenId === project.id && (
+                <div className="absolute right-5 top-12 bg-white border rounded shadow-md z-10 w-40">
+                  <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-2">
+                    <Edit size={14} /> Edit Project
+                  </button>
+                  <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-2">
+                    <FileText size={14} /> View Details
+                  </button>
+                  <hr />
+                  <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2">
+                    <Trash2 size={14} /> Delete
+                  </button>
+                </div>
+              )}
+            </div>
 
-                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <CheckCircle size={16} style={{ marginRight: "4px", color: "#388e3c" }} />
-                    <Typography variant="body2">
-                      {project.tasks.completed}/{project.tasks.total} Tasks
-                    </Typography>
-                  </Box>
+            <div className="flex items-center justify-between mb-2">
+              <span className={`text-xs px-2 py-0.5 rounded ${statusClasses[project.status]}`}>
+                {project.status}
+              </span>
+              <div className="flex items-center text-xs text-gray-500 gap-1">
+                <Calendar size={14} />
+                Due: {project.dueDate}
+              </div>
+            </div>
 
-                  {project.status === "In Progress" && (
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Clock size={16} style={{ marginRight: "4px", color: "#f57c00" }} />
-                      <Typography variant="body2">In Progress</Typography>
-                    </Box>
-                  )}
+            <p className="text-sm text-gray-600 mb-3">{project.description}</p>
 
-                  {project.status === "On Hold" && (
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <AlertCircle size={16} style={{ marginRight: "4px", color: "#7b1fa2" }} />
-                      <Typography variant="body2">On Hold</Typography>
-                    </Box>
-                  )}
-                </Box>
+            <div className="mb-2">
+              <div className="flex justify-between text-sm text-gray-700 mb-1">
+                <span>Progress</span>
+                <span>{project.progress}%</span>
+              </div>
+              <div className="w-full bg-gray-100 h-2 rounded">
+                <div
+                  className={`h-2 rounded ${project.status === "Completed" ? "bg-green-600" : "bg-black"}`}
+                  style={{ width: `${project.progress}%` }}
+                />
+              </div>
+            </div>
 
-                <Divider sx={{ mb: 2 }} />
+            <div className="flex gap-4 items-center text-sm text-gray-700 mt-3 mb-4">
+              <div className="flex items-center gap-1">
+                <CheckCircle size={14} className="text-green-600" />
+                {project.tasks.completed}/{project.tasks.total} Tasks
+              </div>
 
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <Typography variant="body2" fontWeight="medium">
-                    Team Members
-                  </Typography>
-                  <AvatarGroup max={4}>
-                    {project.team.map((member, index) => (
-                      <Avatar key={index} sx={{ width: 28, height: 28, fontSize: "0.75rem", bgcolor: "primary.main" }}>
-                        {member}
-                      </Avatar>
-                    ))}
-                  </AvatarGroup>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+              {project.status === "In Progress" && (
+                <div className="flex items-center gap-1">
+                  <Clock size={14} className="text-yellow-700" />
+                  In Progress
+                </div>
+              )}
+
+              {project.status === "On Hold" && (
+                <div className="flex items-center gap-1">
+                  <AlertCircle size={14} className="text-purple-700" />
+                  On Hold
+                </div>
+              )}
+            </div>
+
+            <div className="border-t pt-3 flex justify-between items-center text-sm text-gray-700">
+              <span>Team Members</span>
+              <div className="flex -space-x-2">
+                {project.team.map((member, i) => (
+                  <div
+                    key={i}
+                    className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs font-medium border-2 border-white"
+                  >
+                    {member}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         ))}
-      </Grid>
-
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-        <MenuItem onClick={handleMenuClose}>
-          <Edit size={16} style={{ marginRight: "8px" }} />
-          Edit Project
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <FileText size={16} style={{ marginRight: "8px" }} />
-          View Details
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleMenuClose} sx={{ color: "error.main" }}>
-          <Trash2 size={16} style={{ marginRight: "8px" }} />
-          Delete Project
-        </MenuItem>
-      </Menu>
-    </Box>
+      </div>
+    </div>
   )
 }
 
-export default ProjectManagement

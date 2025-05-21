@@ -1,18 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Menu, MenuItem, Divider } from "@mui/material";
 import {
   Plus,
   Filter,
-  MoreVertical,
   Mail,
   Phone,
   Edit,
   Trash2,
   Download,
+  Search,
 } from "lucide-react";
-import FormInput from "../components/formInput";
+import Modal from "../components/modal";
 
 // Sample data for leads
 const leadsData = [
@@ -84,17 +83,10 @@ const statusColors = {
 };
 
 function LeadManagement() {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
-
-  const handleMenuOpen = (event, lead) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  const tabs = ["all", "new", "contacted", "qualified", "negotiation", "closed"];
+  const [open, setOpen] = useState(false)
 
   const filtered = leadsData
     .filter((p) =>
@@ -110,23 +102,35 @@ function LeadManagement() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Lead Management</h1>
-        <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm text-white text-semibold rounded-lg bg-blue-500 hover:bg-blue-100 hover:text-blue-500 transition duration-300 mt-3">
-          <Plus size={16} />
+        <button 
+          onClick={() => setOpen(true)}
+          className="flex items-center justify-center gap-2 px-4 py-2 text-sm text-white text-semibold rounded-lg bg-blue-500 hover:bg-blue-100 hover:text-blue-500 transition duration-300 mt-3">
+            <Plus size={16} />
           Add Lead
         </button>
       </div>
 
+      {/* Modal for adding new lead */}
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="Add New Lead"
+      >
+        <p>This is a slick, modern modal with Tailwind CSS.</p>
+        <p>It can be used to display any content you want.</p>
+
+      </Modal>
+
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 items-center">
-        {["all", "new", "contacted", "qualified", "negotiation", "closed"].map(
+      <div className="border-b">
+      <div className="flex space-x-4 text-sm font-medium">
+        {tabs.map(
           (key) => (
             <button
               onClick={() => setFilter(key)}
-              className={`${
-                filter === key
-                  ? "bg-blue-500 text-white hover:bg-blue-600 transition"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              } rounded-xl px-4 py-2 text-sm font-semibold`}
+              className={`py-2 px-3 -mb-px border-b-2 ${
+                filter === key ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500"
+              }`}
               key={key}
             >
               {key === "all"
@@ -144,30 +148,28 @@ function LeadManagement() {
           )
         )}
       </div>
+      </div>
 
       <div className="flex flex-wrap gap-3 items-center justify-between">
-        <FormInput
+        <div className="relative">
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+          <input
           onChange={(e) => setSearch(e.target.value)}
           value={search}
-          placeholder="Search by name, interest or status"
-          label={"."}
-          className="w-1/4"
-        />
-        <div>
-          <Button
-            variant="outlined"
-            startIcon={<Filter size={18} />}
-            sx={{ mr: 2, textTransform: "none" }}
-          >
-            <p>Filter</p>
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<Download size={18} />}
-            sx={{ textTransform: "none" }}
-          >
-            <p>Export</p>
-          </Button>
+            type="text"
+            placeholder="Search leads..."
+            className="pl-10 pr-4 py-2 border rounded-md text-sm w-72 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="flex space-x-2">
+          <button className="flex items-center px-3 py-2 border rounded-md text-sm text-gray-600 hover:bg-gray-100">
+            <Filter className="w-4 h-4 mr-1" />
+            Filter
+          </button>
+          <button className="flex items-center px-3 py-2 border rounded-md text-sm text-gray-600 hover:bg-gray-100">
+            <Download className="w-4 h-4 mr-1" />
+            Export
+          </button>
         </div>
       </div>
 
@@ -210,7 +212,7 @@ function LeadManagement() {
                 </td>
                 <td className="px-4 py-3">
                   <span
-                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium `}  
+                    className={`inline-block px-2 py-1 rounded text-xs font-medium `}  
                     style={{
                       backgroundColor: statusColors[lead.status].bg,
                       color: statusColors[lead.status].color,
@@ -223,12 +225,18 @@ function LeadManagement() {
                 <td className="px-4 py-3">{lead.assignedTo}</td>
                 <td className="px-4 py-3">{lead.lastContact}</td>
                 <td className="px-4 py-3">{lead.propertyInterest}</td>
-                <td className="px-4 py-3 text-right">
-                  <button
-                    className="p-2 hover:bg-gray-100 rounded-md"
-                    onClick={(e) => handleMenuOpen(e, lead)}
-                  >
-                    <MoreVertical className="w-4 h-4 text-gray-500" />
+                <td className="px-4 py-2 text-right space-x-2">
+                  <button className="text-gray-500 hover:text-blue-600">
+                    <Edit className="w-4 h-4" />
+                  </button>
+                  <button className="text-gray-500 hover:text-yellow-600">
+                    <Mail className="w-4 h-4" />
+                  </button>
+                  <button className="text-gray-500 hover:text-green-600">
+                    <Phone className="w-4 h-4" />
+                  </button>
+                  <button className="text-gray-500 hover:text-red-600">
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </td>
               </tr>
@@ -236,30 +244,6 @@ function LeadManagement() {
           </tbody>
         </table>
       </div>
-
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleMenuClose}>
-          <Edit size={16} style={{ marginRight: "8px" }} />
-          Edit Lead
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <Mail size={16} style={{ marginRight: "8px" }} />
-          Send Email
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <Phone size={16} style={{ marginRight: "8px" }} />
-          Call Lead
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleMenuClose} sx={{ color: "error.main" }}>
-          <Trash2 size={16} style={{ marginRight: "8px" }} />
-          Delete Lead
-        </MenuItem>
-      </Menu>
     </div>
   );
 }
