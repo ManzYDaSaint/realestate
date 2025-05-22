@@ -23,16 +23,15 @@ import { Settings } from "./settings";
 import Para from "../components/paragraph";
 import FormInput from "../components/formInput";
 import PropertyList from "./listing";
-// import ClientList from "./clients";
 import { Messages } from "./messages";
 import Analytics from "./analytics";
-import PropertyStatCards from "../components/car";
 import Notify from "./notify";
 import { Divider } from "@mui/material";
 import InvoicingBilling from "./invoices";
 import LeadManagement from "./lead";
 import DealManagement from "./deal";
 import ProjectManagement from "./project";
+import HomeDashboard from "./home";
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -40,7 +39,7 @@ export default function Sidebar() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const menuItems = [
-    { icon: Home, label: "Home", content: <PropertyStatCards /> },
+    { icon: Home, label: "Home", content: <HomeDashboard /> },
     { icon: Building2, label: "Property", content: <PropertyList /> },
     { icon: Users2, label: "Lead Management", content: <LeadManagement /> },
     { icon: DollarSign, label: "Deal Management", content: <DealManagement /> },
