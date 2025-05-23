@@ -2,6 +2,8 @@ import React from "react";
 import dash from "../assets/dashimg.png";
 import PropertyStatCards from "../components/car";
 import AnalyticSales from "../components/sales";
+import ITable from "../components/invoice-table";
+import { Divider } from "@mui/material";
 
 const HomeDashboard = () => {
   const name = "Emmanuel Nyangazi";
@@ -9,11 +11,16 @@ const HomeDashboard = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white text-sm font-medium">
+        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white text-2xl font-bold">
           {name.charAt(0)}
         </div>
-        <h1 className="font-semibold">Welcome, {name}</h1>
+        <h1 className="font-semibold py-4 text-2xl">Welcome, <br /> {name}</h1>
       </div>
+
+    <Divider variant="middle"
+          component={"hr"}
+          sx={{ borderBottomWidth: "3px" }} 
+    />
 
       {/* Cards */}
       <div className="flex w-full items-stretch gap-3 items-center justify-between px-4 py-2">
@@ -47,7 +54,20 @@ const HomeDashboard = () => {
       </div>
 
       {/* Sales */}
-        <AnalyticSales />
+      <div className="py-10 flex items-center items-stretch gap-3 justify-between">
+        <div className="w-3/4">
+          <AnalyticSales />
+        </div>
+        <div className="w-1/4 p-2 border-2 border-gray-200 rounded-lg">
+          <h4 className="font-medium py-2">Recent Activities</h4>
+          <Divider />
+        </div>
+      </div>
+
+      {/* Latest invoices */}
+      <div className="py-10">
+        <ITable />
+      </div>
     </div>
   );
 };
